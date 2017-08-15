@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Symfony Standard Edition
 ========================
 
@@ -66,3 +67,6 @@ Enjoy!
 [10]: https://symfony.com/doc/3.0/cookbook/email.html
 [11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
 [13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html
+=======
+# videoapi
+>>>>>>> 3374c1d888f2c462d3b995e217602cab50371e4d
