@@ -22,7 +22,7 @@ class DefaultController extends Controller
      /**
      * @Route("/pruebas", name="pruebas")
      */
-    public function pruebaAction(Request $request)
+    public function testAction(Request $request)
     {
         //get entity manager
         $em = $this->getDoctrine()->getManager();
