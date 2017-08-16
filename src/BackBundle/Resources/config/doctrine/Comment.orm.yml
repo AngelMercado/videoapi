@@ -1,0 +1,57 @@
+BackBundle\Entity\Comment:
+    type: entity
+    table: comment
+    indexes:
+        fk_comment_video:
+            columns:
+                - videoId
+        fk_comment_user:
+            columns:
+                - userId
+    id:
+        commentid:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: commentId
+            generator:
+                strategy: IDENTITY
+    fields:
+        body:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+        createdAt:
+            type: datetime
+            nullable: true
+            column: created_at
+        updateAt:
+            type: datetime
+            nullable: true
+            column: update_at
+    manyToOne:
+        userid:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                userId:
+                    referencedColumnName: userId
+            orphanRemoval: false
+        videoid:
+            targetEntity: Video
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                videoId:
+                    referencedColumnName: videoId
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
