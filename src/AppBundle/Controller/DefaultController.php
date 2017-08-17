@@ -17,13 +17,11 @@ class DefaultController extends Controller
     }
     public function testAction(Request $request)
     {
+        $helper= $this->get("app.helper");
         //get entity manager
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository("BackBundle:User")->findAll();
-        dump($users);
-        
-        die();
-        
+        return $helper->json($users);                
     }
     
 }
