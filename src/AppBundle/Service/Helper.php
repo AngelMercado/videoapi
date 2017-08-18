@@ -19,7 +19,7 @@ class Helper {
         $normalizer = array(new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer());
     
         //convert object to json
-        $encoder= array("json"=> new \Symfony\Component\Serializer\Encoder\JsonEncoder());
+        $encoder= array("json" => new \Symfony\Component\Serializer\Encoder\JsonEncoder());
         
         //object serializer
         $serilizer = new \Symfony\Component\Serializer\Serializer($normalizer,$encoder);
