@@ -4,6 +4,11 @@ parameters:
 #    parameter_name: value
 
 services:
+    app.jwt_auth:
+        class: AppBundle\Service\JwtAuth
+        arguments: ["@doctrine.orm.entity_manager"]
+    
     app.helper:
         class: AppBundle\Service\Helper
-        arguments: ["null"]
+        arguments: ["@app.jwt_auth"]
+    

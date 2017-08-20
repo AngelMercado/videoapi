@@ -40,15 +40,18 @@ class User
     /**
      * @var string
      */
+    
     private $image;
 
     /**
      * @var \DateTime
+     *@JMS\Type("DateTime<'Y-m-d'>")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
+     * @JMS\Type("DateTime<'Y-m-d'>")
      */
     private $updatedAt;
 

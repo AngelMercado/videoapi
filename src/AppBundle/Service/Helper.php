@@ -14,25 +14,50 @@ namespace AppBundle\Service;
  * @author root
  */
 class Helper {
-     public function json($data){
-        //convert json to object
-        $normalizer = array(new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer());
-    
-        //convert object to json
-        $encoder= array("json" => new \Symfony\Component\Serializer\Encoder\JsonEncoder());
-        
+    public $jwt_auth;
+
+    public function __construct($jwt_auth) {
+        $this->jwt_auth = $jwt_auth;
+    }
+
+    public function authCheck($hash, $getIdentity = false) {
+        $jwt_auth = $this->jwt_auth;
+        $auth = false;
+
+        if ($hash != null) {
+            if ($getIdentity == false) {
+                $checked_token = $jwt_auth->checkToken($hash);
+                if ($checked_token == true) {
+                    $auth = true;
+                }
+            } else {
+                $checked_token = $jwt_auth->checkToken($hash,true);
+                if (is_object($checked_token)) {
+                    $auth = $checked_token;
+                }
+            }
+        }
+        return $auth;
+    }
+
+    public function json($data) {
+        //convert object to array
+        $normalizers = array(new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer());
+
+        //convert array to json or xml
+        $encoders = array("json" => new \Symfony\Component\Serializer\Encoder\JsonEncoder());
+
         //object serializer
-        $serilizer = new \Symfony\Component\Serializer\Serializer($normalizer,$encoder);
-        
+        $serilizer = new \Symfony\Component\Serializer\Serializer($normalizers, $encoders);
+
         $json = $serilizer->serialize($data, 'json');
-        
+
         //Http object
-        
+
         $response = new \Symfony\Component\HttpFoundation\Response();
         $response->setContent($json);
         $response->headers->set("Content-Type", "application/json");
-        
+
         return $response;
-        
     }
 }
