@@ -1,0 +1,5 @@
+user_create:
+    path: /create
+    defaults: {_controller: AppBundle:User:createUser}
+    methods: POST
+    
