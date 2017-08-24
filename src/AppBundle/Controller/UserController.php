@@ -20,8 +20,7 @@ use BackBundle\Entity\User;
 class UserController extends Controller{
     
     public function createUserAction(Request $request) {
-        $helper = $this->get("app.helper");
-        
+        $helper = $this->get("app.helper");        
         $json = $request->get("json",null);
         $params = json_decode($json);       
         $data = array();
@@ -44,12 +43,14 @@ class UserController extends Controller{
                 $user->setCreatedAt($createdAt);
                 $user->setEmail($email);
                 $user->setImage($image);
-                $user->setName($name);
-                $user->setPassword($password);
+                $user->setName($name);                
                 $user->setRole($role);
                 $user->setSurname($surname);
                 $user->setUpdatedAt(null);
                 
+                // encode password
+                $psw = hash('sha256', $password);
+                $user->setPassword($psw);
                 $em = $this->getDoctrine()->getManager();
                 $isset_user = $em->getRepository("BackBundle:User")->findBy(
                         array(

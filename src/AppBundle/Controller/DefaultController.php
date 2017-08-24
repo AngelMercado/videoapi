@@ -41,6 +41,8 @@ class DefaultController extends Controller {
             $params = json_decode($json);
             $email = (isset($params->email)) ? $params->email : null;
             $password = (isset($params->password)) ? $params->password : null;
+            // encode password
+            $psw = hash('sha256', $password);
             $getHash = (isset($params->gethash)) ? $params->gethash : null;
             //validate email
             $emailContraint = new Assert\Email();
@@ -50,9 +52,9 @@ class DefaultController extends Controller {
             if (count($validate_email) == 0 && $password != null) {
                 //sing up return a json or hash
                 if ($getHash == null) {
-                    $singup = $jwt_auth->singup($email, $password);
+                    $singup = $jwt_auth->singup($email, $psw);
                 } else {
-                    $singup = $jwt_auth->singup($email, $password, true);
+                    $singup = $jwt_auth->singup($email, $psw, true);
                 }
                 return new \Symfony\Component\HttpFoundation\JsonResponse($singup);
             } else {
