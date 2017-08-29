@@ -170,8 +170,8 @@ class UserController extends Controller {
         $data = array();
 
         $hash = $request->get("authorization", null);
-        
-        if ($hash != null){
+
+        if ($hash != null) {
             $authCheck = $helpers->authCheck($hash);
 
             if ($authCheck) {
@@ -185,17 +185,23 @@ class UserController extends Controller {
                 $file = $request->files->get("image");
                 if (!empty($file) && $file != null) {
                     $ext = $file->guessExtension();
-                    $file_name = time() . "." + $ext;
-                    $file->move("uploads/user", $file_name);
+                    if($ext == "jpeg" || $ext == "png" || $ext == "gif") {
+                        $file_name = time() . "." + $ext;
+                        $file->move("uploads/user", $file_name);
 
-                    $user->setImage($file_name);
-                    $em->persist($user);
-                    $em->flush();
+                        $user->setImage($file_name);
+                        $em->persist($user);
+                        $em->flush();
 
-                    $data["status"] = "sucess";
-                    $data["code"] = "200";
-                    $data["msg"] = "uploaded image";
-                    return $helpers->json($data);
+                        $data["status"] = "sucess";
+                        $data["code"] = "200";
+                        $data["msg"] = "uploaded image";
+                        return $helpers->json($data);
+                    } else {
+                        $data["status"] = "error";
+                        $data["code"] = "200";
+                        $data["msg"] = "invalid image format";
+                    }
                 } else {
                     $data["status"] = "error";
                     $data["code"] = "400";
@@ -208,13 +214,12 @@ class UserController extends Controller {
                 $data["msg"] = "Ivalid Credentials";
                 return $helpers->json($data);
             }
-        
-        }else{
+        } else {
             $data["status"] = "error";
             $data["code"] = "403";
             $data["msg"] = "Not authenticated";
             return $helpers->json($data);
         }
-
     }
+
 }
