@@ -16,7 +16,7 @@ class JwtAuth {
     public function __construct($manager){
         $this->manager = $manager;
     }
-    public function singup($email,$password,$getHash=NULL) {
+    public function singup($email,$password,$getHash=null) {
         $key = "clave-secreta";
         $singup = false;
         $user = $this->manager->getRepository("BackBundle:User")->findOneBy(
@@ -44,7 +44,7 @@ class JwtAuth {
             $jwt = JWT::encode($token, $key,'HS256');
             $decoded  = JWT::decode($jwt, $key,array('HS256'));
             
-            if ($getHash != null){
+            if ($getHash == null){
                 return $jwt;
             }
             else{

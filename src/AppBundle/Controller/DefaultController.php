@@ -54,7 +54,7 @@ class DefaultController extends Controller {
                 if ($getHash == null) {
                     $singup = $jwt_auth->singup($email, $psw);
                 } else {
-                    $singup = $jwt_auth->singup($email, $psw, true);
+                    $singup = $jwt_auth->singup($email, $psw,true);
                 }
                 return new \Symfony\Component\HttpFoundation\JsonResponse($singup);
             } else {
