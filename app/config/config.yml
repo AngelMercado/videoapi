@@ -71,12 +71,12 @@ swiftmailer:
 #KnpPaginatorBundle configuration
 #distinct true means the entries may be differents
 knp_paginator:
-    page_rage: 5
-    default_option: 
+    page_range: 5
+    default_options: 
         page_name: page
         sort_field_name: sort
         sort_direction_name: direction
         distinct: true
     template:
-        pagination: KnpPaginatorBundle:Pagination:twitter_boostrap_v3_pagination.html.twig 
-        sortable: KnpPaginatorBundle:Paginator:sortable_link.html.twig
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig 
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig
