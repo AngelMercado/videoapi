@@ -56,7 +56,7 @@ BackBundle\Entity\Video:
             nullable: true
             column: updated_at
     manyToOne:
-        userid:
+        user:
             targetEntity: User
             cascade: {  }
             fetch: LAZY

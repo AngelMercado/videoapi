@@ -42,14 +42,16 @@ class Helper {
 
     public function json($data) {
         //convert object to array
-        $normalizers = array(new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer());
+        $normalizer = new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer();
+        $normalizer->setIgnoredAttributes(array('transitions'));
+        
+        $normalizers = array($normalizer);
 
         //convert array to json or xml
-        $encoders = array("json" => new \Symfony\Component\Serializer\Encoder\JsonEncoder());
-
+        $encoders = array("json" => new \Symfony\Component\Serializer\Encoder\JsonEncoder());        
         //object serializer
         $serilizer = new \Symfony\Component\Serializer\Serializer($normalizers, $encoders);
-
+        
         $json = $serilizer->serialize($data, 'json');
 
         //Http object

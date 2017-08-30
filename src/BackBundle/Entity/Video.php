@@ -50,7 +50,7 @@ class Video
     /**
      * @var \BackBundle\Entity\User
      */
-    private $userid;
+    private $user;
 
 
     /**
@@ -232,27 +232,27 @@ class Video
     }
 
     /**
-     * Set userid
+     * Set user
      *
-     * @param \BackBundle\Entity\User $userid
+     * @param \BackBundle\Entity\User $user
      *
      * @return Video
      */
-    public function setUserid(\BackBundle\Entity\User $userid = null)
+    public function setUser(\BackBundle\Entity\User $user = null)
     {
-        $this->userid = $userid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userid
+     * Get user
      *
      * @return \BackBundle\Entity\User
      */
-    public function getUserid()
+    public function getUser()
     {
-        return $this->userid;
+        return $this->user;
     }
 }
 
