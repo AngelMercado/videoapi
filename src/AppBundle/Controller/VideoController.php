@@ -270,22 +270,59 @@ class VideoController extends Controller {
             "totalPages" => ceil($total_items_count / $items_per_page),
             "data" => $pagination
         );
-        
+
         return $helper->json($data);
     }
+
     public function lastVideosAction() {
         $helper = $this->get("app.helper");
         $em = $this->getDoctrine()->getManager();
-        
+
         $dql = "SELECT v FROM  BackBundle:Video v ORDER BY v.createdAt DESC";
         $query = $em->createQuery($dql)->setMaxResults(5);
         $videos = $query->getResult();
-        
+
         $data = array(
-            "status"=>"sucess",
-            "data"=>$videos
+            "status" => "sucess",
+            "data" => $videos
         );
-        
+
         return $helper->json($data);
     }
+
+    public function detailVideoAction(Request $request, $videoid = null) {
+        $helper = $this->get("app.helper");
+        $em = $this->getDoctrine()->getManager();
+        $data = array();
+
+        if ($videoid != null) {
+
+            $video = $em->getRepository("BackBundle:Video")->findOneBy(
+                    array(
+                        "videoid" => $videoid
+            ));
+
+            if (isset($video) && $video != null) {
+                
+                $data["status"] = "success";
+                $data["code"] = "202";
+                $data["data"] = $video;
+
+                return $helper->json($data);
+            } else {
+                $data["status"] = "error";
+                $data["code"] = "404";
+                $data["msg"] = "param not found";
+
+                return $helper->json($data);
+            }
+        } else {
+            $data["status"] = "error";
+            $data["code"] = "404";
+            $data["msg"] = "param not found";
+
+            return $helper->json($data);
+        }
+    }
+
 }
