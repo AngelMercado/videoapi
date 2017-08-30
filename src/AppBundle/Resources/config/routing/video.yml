@@ -5,10 +5,10 @@ video_create:
     
 video_update:
     path: /update/{videoid}
-    defaults: {_controller: AppBundle:Video:updateVideo}
+    defaults: {_controller: AppBundle:Video:updateVideo, videoid:null}
     methods: POST
     
 video_upload_files:
-    path: /uploadFiles
-    defaults: {_controller: AppBundle:Video:uploadFiles, id:null}
+    path: /uploadFiles/{videoid}
+    defaults: {_controller: AppBundle:Video:uploadFiles, videoid:null}
     methods: POST

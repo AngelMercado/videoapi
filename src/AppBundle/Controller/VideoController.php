@@ -170,9 +170,78 @@ class VideoController extends Controller {
         }
     }
 
-    public function uploadFilesAction(Request $request) {
-        echo "hola controlador video";
-        die();
+    public function uploadFilesAction(Request $request, $videoid) {
+        $helper = $this->get("app.helper");
+        $hash = $request->get("authorization", null);
+
+        //verifing user have a valid token
+        $authCheck = $helper->authCheck($hash);
+        $data = array();
+
+        if ($authCheck == true) {
+            $identity = $helper->authCheck($hash, true);
+
+            $em = $this->getDoctrine()->getEntityManager();
+            $video = $em->getRepository("BackBundle:Video")->findOneBy(
+                    array(
+                        "videoid" => $videoid
+            ));
+            //valid the user is the owner of the video
+            if ($videoid != null && isset($identity->sub) && $identity->sub == $video->getUser()->getUserid()) {
+                $fileImage = $request->files->get("image", null);
+                $fileVideo = $request->files->get("video", null);
+                //switch between image and video
+                if ($fileImage != null && !empty($fileImage)) {
+                    $ext = $fileImage->guessExtension();
+                    $file_name = time() . "." . $ext;
+
+                    if ($ext == "jpeg" || $ext == "png") {
+                        $filename = time() . "." . $ext;
+                        $path_of_file = "uploads/video_image/video_" . $video->getVideoid();
+                        $fileImage->move($path_of_file);
+                        $video->setImage($filename);
+                        $video->setVideopath($path_of_file);
+                        $em->persist($video);
+                        $em->flush();
+                        $data["status"] = "success";
+                        $data["code"] = "200";
+                        $data["msg"] = "image file uploaded";
+                        return $helper->json($data);
+                    } else {
+                        $data["status"] = "error";
+                        $data["code"] = "400";
+                        $data["msg"] = "format for image invalid";
+                        return $helper->json($data);
+                    }
+                } else {
+                    if ($fileVideo != null && !empty($fileVideo)) {
+                        $ext = $fileVideo->guessExtension();
+                        if ($ext == 'mp4' || $ext == "avi") {                            
+                            $path_of_file = "uploads/video_files/video_" . $video->getVideoid();
+                            $fileVideo->move($path_of_file);                            
+                            $video->setVideopath($path_of_file);
+                            $em->persist($video);
+                            $em->flush();
+                            $data["status"] = "success";
+                            $data["code"] = "200";
+                            $data["msg"] = "video file uploaded";
+                            return $helper->json($data);
+                        } else {
+                            $data["status"] = "error";
+                            $data["code"] = "400";
+                            $data["msg"] = "Format for video invalid";
+                            return $helper->json($data);
+                        }
+                    }
+                }
+            }
+        } else {
+            $data["status"] = "error";
+            $data["code"] = "403";
+            $data["msg"] = "Authorization not valid";
+
+            return $helper->json($data);
+        }
     }
 
 }
