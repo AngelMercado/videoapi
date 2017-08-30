@@ -17,3 +17,8 @@ video_list:
     path: /list
     defaults: {_controller: AppBundle:Video:videoList}
     methods: GET
+
+video_last_list:
+    path: /lastVideos
+    defaults: {_controller: AppBundle:Video:lastVideos}
+    methods: GET

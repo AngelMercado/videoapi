@@ -273,5 +273,19 @@ class VideoController extends Controller {
         
         return $helper->json($data);
     }
-
+    public function lastVideosAction() {
+        $helper = $this->get("app.helper");
+        $em = $this->getDoctrine()->getManager();
+        
+        $dql = "SELECT v FROM  BackBundle:Video v ORDER BY v.createdAt DESC";
+        $query = $em->createQuery($dql)->setMaxResults(5);
+        $videos = $query->getResult();
+        
+        $data = array(
+            "status"=>"sucess",
+            "data"=>$videos
+        );
+        
+        return $helper->json($data);
+    }
 }
