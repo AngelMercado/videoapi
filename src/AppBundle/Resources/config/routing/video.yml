@@ -32,3 +32,4 @@ video_search:
     path: /search/{search}
     defaults: {_controller:AppBundle:Video:searchVideo, search:null}
     methods: GET
+    

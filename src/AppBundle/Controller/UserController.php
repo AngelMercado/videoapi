@@ -185,7 +185,7 @@ class UserController extends Controller {
                 $file = $request->files->get("image");
                 if (!empty($file) && $file != null) {
                     $ext = $file->guessExtension();
-                    if($ext == "jpeg" || $ext == "png" || $ext == "gif") {
+                    if ($ext == "jpeg" || $ext == "png" || $ext == "gif") {
                         $file_name = time() . "." + $ext;
                         $file->move("uploads/user", $file_name);
 
@@ -220,6 +220,50 @@ class UserController extends Controller {
             $data["msg"] = "Not authenticated";
             return $helpers->json($data);
         }
+    }
+
+    //this method is public any user can see the videos
+    public function channelAction(Request $request, $userid = null) {
+        $helper = $this->get("app.helper");
+        #get param for get request
+        $page = $request->query->getInt("page", 1);
+        $em = $this->getDoctrine()->getEntityManager();
+        $user = $em->getRepository("BackBundle:User")->findOneBy(
+                array(
+                    "userid" => $userid
+        ));
+
+        #create a dql query
+        $dql = "SELECT v FROM BackBundle:Video v WHERE v.user = $userid  ORDER BY v.videoid DESC";
+        $query = $em->createQuery($dql);
+        $data = array();
+
+        #load paginator
+        $paginator = $this->get("knp_paginator");
+        $items_per_page = 6;
+        $pagination = $paginator->paginate($query, $page, $items_per_page);                
+        $total_items_count = $pagination->getTotalItemCount();
+
+        if ($user->getUserid() != null) {
+            $data = array(
+                "status" => "success",
+                "code" => 202,
+                "totalItemsCount" => $total_items_count,
+                "actualPage" => $page,
+                "itemsPerPage" => $items_per_page,
+                "totalPages" => ceil($total_items_count / $items_per_page),
+            );
+            $data["data"]["videos"] = $pagination;
+            $data["data"]["user"] = $user;
+        } else {
+            $data = array(
+                "status" => "error",
+                "code" => 404,
+                "msg" => "user do not exits"
+            );
+        }
+
+        return $helper->json($data);
     }
 
 }
