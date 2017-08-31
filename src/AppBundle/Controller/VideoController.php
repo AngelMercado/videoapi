@@ -292,6 +292,7 @@ class VideoController extends Controller {
 
     public function detailVideoAction(Request $request, $videoid = null) {
         $helper = $this->get("app.helper");
+        
         $em = $this->getDoctrine()->getManager();
         $data = array();
 
@@ -303,7 +304,7 @@ class VideoController extends Controller {
             ));
 
             if (isset($video) && $video != null) {
-                
+
                 $data["status"] = "success";
                 $data["code"] = "202";
                 $data["data"] = $video;
@@ -323,6 +324,44 @@ class VideoController extends Controller {
 
             return $helper->json($data);
         }
+    }
+
+    public function searchVideoAction(Request $request, $search = null) {
+
+        $helper = $this->get("app.helper");
+         #get param for get request
+        $page = $request->query->getInt("page", 1);
+        $data = array();
+        $em = $this->getDoctrine()->getManager();
+        if ($search != null) {
+            
+            $dql = "SELECT v FROM BackBundle:Video v " .
+                    "WHERE v.title LIKE '%$search%' OR " .
+                    "v.description LIKE '%$search%' ORDER BY v.videoid DESC";
+        } else {
+            $dql = "SELECT v FROM BackBundle:Video v ORDER BY v.videoid DESC" ;                    
+
+        }
+        $query = $em->createQuery($dql);
+
+        #load paginator
+        $paginator = $this->get("knp_paginator");
+        $items_per_page = 6;
+        $pagination = $paginator->paginate($query, $page, $items_per_page);
+
+        $total_items_count = $pagination->getTotalItemCount();
+
+        $data = array(
+            "status" => "success",
+            "code" => 202,
+            "totalItemsCount" => $total_items_count,
+            "actualPage" => $page,
+            "itemsPerPage" => $items_per_page,
+            "totalPages" => ceil($total_items_count / $items_per_page),
+            "data" => $pagination
+        );
+
+        return $helper->json($data);
     }
 
 }

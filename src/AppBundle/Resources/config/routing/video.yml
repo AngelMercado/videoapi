@@ -27,3 +27,8 @@ video_detail:
     path: /detail/{videoid}
     defaults: {_controller:AppBundle:Video:detailVideo, videoid:null}
     methods: GET
+    
+video_search:
+    path: /search/{search}
+    defaults: {_controller:AppBundle:Video:searchVideo, search:null}
+    methods: GET
