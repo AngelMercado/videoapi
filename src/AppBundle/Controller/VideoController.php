@@ -292,7 +292,7 @@ class VideoController extends Controller {
 
     public function detailVideoAction(Request $request, $videoid = null) {
         $helper = $this->get("app.helper");
-        
+
         $em = $this->getDoctrine()->getManager();
         $data = array();
 
@@ -329,20 +329,22 @@ class VideoController extends Controller {
     public function searchVideoAction(Request $request, $search = null) {
 
         $helper = $this->get("app.helper");
-         #get param for get request
+        #get param for get request
         $page = $request->query->getInt("page", 1);
         $data = array();
         $em = $this->getDoctrine()->getManager();
         if ($search != null) {
-            
-            $dql = "SELECT v FROM BackBundle:Video v " .
-                    "WHERE v.title LIKE '%$search%' OR " .
-                    "v.description LIKE '%$search%' ORDER BY v.videoid DESC";
-        } else {
-            $dql = "SELECT v FROM BackBundle:Video v ORDER BY v.videoid DESC" ;                    
 
+            $dql = "SELECT v FROM BackBundle:Video v "
+                    . "WHERE v.title LIKE :search OR "
+                    . "v.description LIKE :search ORDER BY v.videoid DESC";
+            
+            $query = $em->createQuery($dql)
+                    ->setParameter("search", "%$search%");
+        } else {
+            $dql = "SELECT v FROM BackBundle:Video v ORDER BY v.videoid DESC";
+            $query = $em->createQuery($dql);
         }
-        $query = $em->createQuery($dql);
 
         #load paginator
         $paginator = $this->get("knp_paginator");
