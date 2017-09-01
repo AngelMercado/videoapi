@@ -43,8 +43,8 @@ class Helper {
     public function json($data) {
         //convert object to array
         $normalizer = new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer();
-        $normalizer->setIgnoredAttributes(array('transitions'));
-        $normalizer->setIgnoredAttributes(array('password'));
+        $normalizer->setIgnoredAttributes(array('transitions','password'));
+        
         
         $normalizers = array($normalizer);
 
