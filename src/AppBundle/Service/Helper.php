@@ -44,6 +44,7 @@ class Helper {
         //convert object to array
         $normalizer = new \Symfony\Component\Serializer\Normalizer\ObjectNormalizer();
         $normalizer->setIgnoredAttributes(array('transitions'));
+        $normalizer->setIgnoredAttributes(array('password'));
         
         $normalizers = array($normalizer);
 
