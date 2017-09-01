@@ -1,0 +1,16 @@
+## YAML Template.
+---
+comment_create:
+    path: /create
+    defaults: {_controller: AppBundle:Comment:createComment}
+    methods: POST
+comment_delete:
+    path: /delete/{commentId}
+    defaults: {_controller:AppBundle:Comment:deleteComment, commentId:null}
+    methods: DELETE
+    
+comment_list:
+    path: /list/{videoId}
+    defaults: {_controller:AppBundle:Comment:listComment, videoId:null}
+    methods: GET
+    
