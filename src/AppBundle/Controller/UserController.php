@@ -116,14 +116,13 @@ class UserController extends Controller {
                 $validate_email = $this->get("validator")->validate($email, $emailContraint);
 
                 if ($email != null && count($validate_email) == 0 && $name != null && $surname != null) {
-                    $user->setEmail($email);
-                    $user->setImage($image);
+                    $user->setEmail($email);                    
                     $user->setName($name);
                     $user->setRole($role);
                     $user->setSurname($surname);
                     $user->setUpdatedAt($updatedAt);
 
-                    if ($password != null) {
+                    if ($password != null && !empty($password)) {
                         // encode password
                         $psw = hash('sha256', $password);
                         $user->setPassword($psw);
@@ -192,14 +191,15 @@ class UserController extends Controller {
                         $user->setImage($file_name);
                         $em->persist($user);
                         $em->flush();
-
+                        
                         $data["status"] = "sucess";
+                        $data["imgPath"] = $file_name;
                         $data["code"] = "200";
                         $data["msg"] = "uploaded image";
                         return $helpers->json($data);
                     } else {
                         $data["status"] = "error";
-                        $data["code"] = "200";
+                        $data["code"] = "400";
                         $data["msg"] = "invalid image format";
                     }
                 } else {

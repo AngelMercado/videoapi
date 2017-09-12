@@ -33,6 +33,7 @@ class JwtAuth {
             //generate commont jwt sub, iat, exp
             $token = array(
                 "sub" => $user->getUserId(),
+                "rol" => $user->getRole(),
                 "email" => $user->getEmail(),
                 "name" => $user->getName(),
                 "surname" => $user->getSurname(),
@@ -44,7 +45,7 @@ class JwtAuth {
             $jwt = JWT::encode($token, $key,'HS256');
             $decoded  = JWT::decode($jwt, $key,array('HS256'));
             
-            if ($getHash == null){
+            if ($getHash == true){
                 return $jwt;
             }
             else{
@@ -61,7 +62,7 @@ class JwtAuth {
         $auth =false;
         
         try {
-            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            $decoded = JWT::decode(trim($jwt,'"'), $key, array('HS256'));
             
          } catch (\DomainException $exc) {
             $auth = false;            
