@@ -78,7 +78,7 @@ class VideoController extends Controller {
                             "createdAt" => $createdAt
                 ));
 
-                $data["status"] = "sucess";
+                $data["status"] = "success";
                 $data["code"] = 202;
                 $data["data"] = $video;
                 return $helper->json($data);
@@ -143,7 +143,7 @@ class VideoController extends Controller {
 
 
 
-                    $data["status"] = "sucess";
+                    $data["status"] = "success";
                     $data["code"] = 202;
                     $data["data"] = "videoUpdated";
                     return $helper->json($data);
@@ -205,6 +205,7 @@ class VideoController extends Controller {
                         $em->flush();
                         $data["status"] = "success";
                         $data["code"] = "200";
+                        $data["imgPath"] = $path_of_file;
                         $data["msg"] = "image file uploaded";
                         return $helper->json($data);
                     } else {
@@ -283,7 +284,7 @@ class VideoController extends Controller {
         $videos = $query->getResult();
 
         $data = array(
-            "status" => "sucess",
+            "status" => "success",
             "data" => $videos
         );
 
