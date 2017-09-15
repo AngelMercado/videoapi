@@ -197,10 +197,9 @@ class VideoController extends Controller {
 
                     if ($ext == "jpeg" || $ext == "png") {
                         $filename = time() . "." . $ext;
-                        $path_of_file = "uploads/video_image/video_" . $video->getVideoid();
-                        $fileImage->move($path_of_file);
-                        $video->setImage($filename);
-                        $video->setVideopath($path_of_file);
+                        $path_of_file = "uploads/video_image";
+                        $fileImage->move($path_of_file,$filename);                        
+                        $video->setImage($path_of_file."/".$filename);                        
                         $em->persist($video);
                         $em->flush();
                         $data["status"] = "success";
@@ -218,9 +217,10 @@ class VideoController extends Controller {
                     if ($fileVideo != null && !empty($fileVideo)) {
                         $ext = $fileVideo->guessExtension();
                         if ($ext == 'mp4' || $ext == "avi") {
-                            $path_of_file = "uploads/video_files/video_" . $video->getVideoid();
-                            $fileVideo->move($path_of_file);
-                            $video->setVideopath($path_of_file);
+                            $file_name = time() . "." . $ext;                            
+                            $path_of_file = "uploads/video_files";
+                            $fileVideo->move($path_of_file,$file_name);
+                            $video->setVideopath($path_of_file."/".$file_name);
                             $em->persist($video);
                             $em->flush();
                             $data["status"] = "success";
