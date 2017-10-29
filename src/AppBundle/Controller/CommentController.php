@@ -40,7 +40,7 @@ class CommentController extends Controller {
 
                 $created_at = new \DateTime('now');
                 $user_id = (isset($identity->sub)) ? $identity->sub : null;
-                $video_id = (isset($params->videoId)) ? $params->videoId : null;
+                $video_id = (isset($params->video_id)) ? $params->video_id : null;
                 $body = (isset($params->body)) ? $params->body : null;
 
                 if ($user_id != null && $video_id != null) {
@@ -53,7 +53,7 @@ class CommentController extends Controller {
 
                     $video = $em->getRepository("BackBundle:Video")->findOneBy(
                             array(
-                                "videoid" => $user_id
+                                "videoid" => $video_id
                     ));
 
                     //intance comment
